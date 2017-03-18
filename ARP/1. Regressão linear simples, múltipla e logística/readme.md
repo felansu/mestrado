@@ -48,8 +48,7 @@ Capacidade de generalização: Discernir entre realidades diferentes.
 
 Erro quadrático médio:
 
-![EQM - Erro Quadrático Médio](ARP/1. Regressão linear simples, múltipla e
-logística/images/EQM.svg)
+![EQM - Erro Quadrático Médio](https://github.com/felansu/mestrado/blob/master/ARP/1.%20Regress%C3%A3o%20linear%20simples%2C%20m%C3%BAltipla%20e%20log%C3%ADstica/images/EQM.svg)
 
 
 i = indice
