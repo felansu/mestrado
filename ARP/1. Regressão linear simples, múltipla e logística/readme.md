@@ -47,8 +47,7 @@ b¹ = 1013,9 b0 = 180,59
 Capacidade de generalização: Discernir entre realidades diferentes.
 
 Erro quadrático médio:
-<img src="images/EQM.svg">
-
+<img src="images/EQM.png">
 
 i = indice
 
