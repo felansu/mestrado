@@ -3,7 +3,7 @@
 ## Regressão linear simples
 
 
-> A análide de regresão estuda o **relacionamento** entre uma variável
+> A análise de regresão estuda o **relacionamento** entre uma variável
 > **dependente** e outra **independente**. Este relacionamento é
 > representado por um **modelo** matemático, isto é, por uma equação que
 > relaciona. Tem como objetivo determinar a equação da reta ajustada.
@@ -94,6 +94,4 @@ b0 = 430,2 b1 = 364,3 b2 = 2210,6
 
 Y = 1 / 1 + e
 
-
 teste estatistico regressão lso
-
