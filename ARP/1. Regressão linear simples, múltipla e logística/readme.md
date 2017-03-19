@@ -28,52 +28,43 @@ adequa ao salário da empresa ?
 
 1. Descobrir qual é a relação entre a experiência e o salário ?
 
-y = b0 + b1 x + e
+Formula para descobrir o modelo:
 
-y = variável que será explicada (dependente) e = Erro do modelo x =
-Variável de entrada (independente)
+ ![formula-modelo](images/formula-modelo.png)
 
+- y = Variável dependente
+- e = Erro do modelo
+- x = Variável de independente
 
-E = Somatorio ~ = Média (- encima do y)
+![formula-modelo-b1](images/formula-modelo-b1.png)
 
-Para estimar: b¹ = Exy/Exx b0 = ~y-b¹~y
+![formula-modelo-b0](images/formula-modelo-b0.png)
 
-b¹ = 1013,9 b0 = 180,59
+2. Erro quadrático médio / Erro padrão:
 
-^Y = Quer dizer valor estimado (estimativa)
-
-^Y = 180,59 + 1013,9 * 8 ^Y=8291,79
-
-Capacidade de generalização: Discernir entre realidades diferentes.
-
-Erro quadrático médio:
 <img src="images/erro-quadratico-medio.png">
 
-i = indice
+ou
 
-    n
-    E   (Yi - ^Yi)²
+<img src="images/erro-quadratico-medio-simplificado.png">
 
-I = 0
+ou ainda mais simplificado:
 
-  --------------------
+![erro-quadratico-medio-simplificado-](images/erro-quadratico-medio-simplificado-.png)
 
-            N
+> O modelo é bom ?
+Só utilizar o modelo de determinação R² ou
 
-Yi = valor real ^Yi = valor estimado
+![formula-modelo-r](images/formula-modelo-r.png)
 
-> O modelo é bom ? Só utilizar o modelo de determinação R² R² = (Exy)² /
-> ExxEyy = 0,9541
-> * 0 = Não tem logica nenhum
-> * 1 = Exato
-> * \> 0.5 <0.7 é mais o menos
-> * \> 0.7 é bom
+Tabela de qualidade:
 
 <table>
-    <tr><td>0</td><td>Não tem logica nenhum</td>
-    <tr><td>1</td><td>0</td>
-    <tr><td></td><td>1</td>
-    <tr><td>8</td><td>2</td>
+    <tr><td>0</td><td>Não há relação entre as variáveis</td>
+    <tr><td>> 0 & < 0.3</td><td>Relação fraca</td>
+    <tr><td>> 0.3 & < 0.6</td><td>Relação moderada</td>
+    <tr><td>> 0.6 & < 0.8</td><td>Relação forte</td>
+    <tr><td>> 0.8</td><td>Relação muito forte</td>
 </table>
 
 
