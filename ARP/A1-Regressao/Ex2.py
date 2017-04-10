@@ -52,7 +52,7 @@ def summary(df, somatorioXY, somatorioXX, b0, b1, eqm):
 def plotarDados(df):
     df.plot.scatter(x='Idade',
                     y='ProbAtaqueCardiaco',
-                    color='DarkGreen', label='Group 2')
+                    color='DarkGreen')
 
 def estimateModel():
     # Permitimos acesso a variável global
