@@ -8,8 +8,8 @@ import numpy as np
 from scipy.stats import norm
 import matplotlib.pyplot as plt
 
-df = {}     # dataFrame Original
-dft = {}    # dataFrameTreinamento
+df = {}  # dataFrame Original
+dft = {}  # dataFrameTreinamento
 
 # 1) Achar gaussianas (distribuição normal) Ex. p(SL | Ci).
 # 1.1 Achar media - 1.2 Achar variáncia - 1.3 Achar desvio padrão
