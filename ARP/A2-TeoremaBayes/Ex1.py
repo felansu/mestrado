@@ -87,16 +87,47 @@ def obterGaussiana(escala, media, desvioPadrao):
     return np.exp(-np.power(escala - media, 2.) / (2 * np.power(desvioPadrao, 2.)))
 
 dfGaussianas = []
-x = np.arange(0, 10, .001)
-def montarGaussianas(caracteristica):
-    for contador in np.arange(0, 11):
-        dfGaussianas.insert(contador, obterGaussiana(contador, medias[caracteristica], desvioPadrao[caracteristica]))
-
-montarGaussianas('setosa-sl')
 
 gaussianaSetosaSl = norm(loc = medias['setosa-sl'], scale = desvioPadrao['setosa-sl'])
 gaussianaVersicolorSl = norm(loc = medias['versicolor-sl'], scale = desvioPadrao['versicolor-sl'])
 gaussianaVirginicaSl = norm(loc = medias['virginica-sl'], scale = desvioPadrao['virginica-sl'])
 
-plt.plot(x, gaussianaSetosaSl.pdf(x), x, gaussianaVersicolorSl.pdf(x), x, gaussianaVirginicaSl.pdf(x))
-plt.show()
+gaussianaSetosaSw = norm(loc = medias['setosa-sw'], scale = desvioPadrao['setosa-sw'])
+gaussianaVersicolorSw = norm(loc = medias['versicolor-sw'], scale = desvioPadrao['versicolor-sw'])
+gaussianaVirginicaSw = norm(loc = medias['virginica-sw'], scale = desvioPadrao['virginica-sw'])
+
+gaussianaSetosaPl = norm(loc = medias['setosa-pl'], scale = desvioPadrao['setosa-pl'])
+gaussianaVersicolorPl = norm(loc = medias['versicolor-pl'], scale = desvioPadrao['versicolor-pl'])
+gaussianaVirginicaPl = norm(loc = medias['virginica-pl'], scale = desvioPadrao['virginica-pl'])
+
+gaussianaSetosaPw = norm(loc = medias['setosa-pw'], scale = desvioPadrao['setosa-pw'])
+gaussianaVersicolorPw = norm(loc = medias['versicolor-pw'], scale = desvioPadrao['versicolor-pw'])
+gaussianaVirginicaPw = norm(loc = medias['virginica-pw'], scale = desvioPadrao['virginica-pw'])
+
+slGraficos = plt
+slRange = np.arange(0, 10, .001)
+slGraficos.plot(slRange, gaussianaSetosaSl.pdf(slRange),
+                slRange, gaussianaVersicolorSl.pdf(slRange),
+                slRange, gaussianaVirginicaSl.pdf(slRange))
+slGraficos.show()
+
+swGraficos = plt
+swRange = np.arange(0, 6, .001)
+swGraficos.plot(swRange, gaussianaSetosaSw.pdf(swRange),
+                swRange, gaussianaVersicolorSw.pdf(swRange),
+                swRange, gaussianaVirginicaSw.pdf(swRange))
+swGraficos.show()
+
+plGraficos = plt
+plRange = np.arange(0, 10, .001)
+plGraficos.plot(plRange, gaussianaSetosaPl.pdf(plRange),
+                plRange, gaussianaVersicolorPl.pdf(plRange),
+                plRange, gaussianaVirginicaPl.pdf(plRange))
+plGraficos.show()
+
+pwGraficos = plt
+pwRange = np.arange(-1, 4, .001)
+pwGraficos.plot(pwRange, gaussianaSetosaPw.pdf(pwRange),
+                pwRange, gaussianaVersicolorPw.pdf(pwRange),
+                pwRange, gaussianaVirginicaPw.pdf(pwRange))
+pwGraficos.show()
