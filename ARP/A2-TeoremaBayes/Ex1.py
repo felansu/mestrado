@@ -8,29 +8,18 @@ import numpy as np
 from scipy.stats import norm
 import matplotlib.pyplot as plt
 
-def formatColumns(df):
-    return df
+df = pd.read_csv('iris.data')
 
 
-def readFile(fileName):
-    return formatColumns(pd.read_csv(fileName, sep=","))
+dadosTreinamento = df.iloc[:35, :].append(df.iloc[50:85, :]).append(df.iloc[100:135, :]).copy()
 
-
-df = readFile('iris.data')
-
-
-def pegaDadosFiltrados(df):
-    return df.iloc[:35, :].append(df.iloc[50:85, :]).append(df.iloc[100:135, :]).copy()
-
-
-dadosTreinamento = pegaDadosFiltrados(df)
-
-# 1) Gaussianas
-# p(SL | Ci) = Achamos as gaussianas == distribuição normal
-# Gaussianas = Achar a media e desvio padrão
+# 1) Gaussianas Ex. p(SL | Ci).
+# Para achar as gaussianas (distribuição normal) teremos que achar a 1.1 media e o 1.3 desvio padrão
+# Para achar o desvio padrão teremos que achar a 1.2 variáncia
 medias = {}
 variancias = {}
 desvioPadrao = {}
+
 
 # 1.1
 def calcularMedias(dft):
@@ -49,20 +38,30 @@ def calcularMedias(dft):
     medias['virginica-pw'] = dft[(dft['class'] == 'Iris-virginica')]['pw'].sum() / 35
     return medias
 
-# 1.2 Variáncia: Valor menos a media elevado ao quadrado
+
+# 1.2 Variáncia: Somatorio de (Valor - media elevado ao quadrado) / número de elementos
 def calcularVariancias(dft):
-    variancias['setosa-sl'] = ((dft[(dft['class'] == 'Iris-setosa')]['sl'] - medias['setosa-sl']) ** 2).sum()/34
-    variancias['setosa-sw'] = ((dft[(dft['class'] == 'Iris-setosa')]['sw'] - medias['setosa-sw']) ** 2).sum()/34
-    variancias['setosa-pl'] = ((dft[(dft['class'] == 'Iris-setosa')]['pl'] - medias['setosa-pl']) ** 2).sum()/34
-    variancias['setosa-pw'] = ((dft[(dft['class'] == 'Iris-setosa')]['pw'] - medias['setosa-pw']) ** 2).sum()/34
-    variancias['versicolor-sl'] = ((dft[(dft['class'] == 'Iris-versicolor')]['sl'] - medias['versicolor-sl']) ** 2).sum()/34
-    variancias['versicolor-sw'] = ((dft[(dft['class'] == 'Iris-versicolor')]['sw'] - medias['versicolor-sw']) ** 2).sum()/34
-    variancias['versicolor-pl'] = ((dft[(dft['class'] == 'Iris-versicolor')]['pl'] - medias['versicolor-pl']) ** 2).sum()/34
-    variancias['versicolor-pw'] = ((dft[(dft['class'] == 'Iris-versicolor')]['pw'] - medias['versicolor-pw']) ** 2).sum()/34
-    variancias['virginica-sl'] = ((dft[(dft['class'] == 'Iris-virginica')]['sl'] - medias['virginica-sl']) ** 2).sum()/34
-    variancias['virginica-sw'] = ((dft[(dft['class'] == 'Iris-virginica')]['sw'] - medias['virginica-sw']) ** 2).sum()/34
-    variancias['virginica-pl'] = ((dft[(dft['class'] == 'Iris-virginica')]['pl'] - medias['virginica-pl']) ** 2).sum()/34
-    variancias['virginica-pw'] = ((dft[(dft['class'] == 'Iris-virginica')]['pw'] - medias['virginica-pw']) ** 2).sum()/34
+    variancias['setosa-sl'] = ((dft[(dft['class'] == 'Iris-setosa')]['sl'] - medias['setosa-sl']) ** 2).sum() / 34
+    variancias['setosa-sw'] = ((dft[(dft['class'] == 'Iris-setosa')]['sw'] - medias['setosa-sw']) ** 2).sum() / 34
+    variancias['setosa-pl'] = ((dft[(dft['class'] == 'Iris-setosa')]['pl'] - medias['setosa-pl']) ** 2).sum() / 34
+    variancias['setosa-pw'] = ((dft[(dft['class'] == 'Iris-setosa')]['pw'] - medias['setosa-pw']) ** 2).sum() / 34
+    variancias['versicolor-sl'] = ((dft[(dft['class'] == 'Iris-versicolor')]['sl'] - medias[
+        'versicolor-sl']) ** 2).sum() / 34
+    variancias['versicolor-sw'] = ((dft[(dft['class'] == 'Iris-versicolor')]['sw'] - medias[
+        'versicolor-sw']) ** 2).sum() / 34
+    variancias['versicolor-pl'] = ((dft[(dft['class'] == 'Iris-versicolor')]['pl'] - medias[
+        'versicolor-pl']) ** 2).sum() / 34
+    variancias['versicolor-pw'] = ((dft[(dft['class'] == 'Iris-versicolor')]['pw'] - medias[
+        'versicolor-pw']) ** 2).sum() / 34
+    variancias['virginica-sl'] = ((dft[(dft['class'] == 'Iris-virginica')]['sl'] - medias[
+        'virginica-sl']) ** 2).sum() / 34
+    variancias['virginica-sw'] = ((dft[(dft['class'] == 'Iris-virginica')]['sw'] - medias[
+        'virginica-sw']) ** 2).sum() / 34
+    variancias['virginica-pl'] = ((dft[(dft['class'] == 'Iris-virginica')]['pl'] - medias[
+        'virginica-pl']) ** 2).sum() / 34
+    variancias['virginica-pw'] = ((dft[(dft['class'] == 'Iris-virginica')]['pw'] - medias[
+        'virginica-pw']) ** 2).sum() / 34
+
 
 # 1.3 Desvio padrão: A raiz da variáncia
 def calcularDesvioPadrao(dft):
@@ -79,30 +78,27 @@ def calcularDesvioPadrao(dft):
     desvioPadrao['virginica-pl'] = math.sqrt(variancias['virginica-pl'])
     desvioPadrao['virginica-pw'] = math.sqrt(variancias['virginica-pw'])
 
+
 calcularMedias(dadosTreinamento)
 calcularVariancias(dadosTreinamento)
 calcularDesvioPadrao(dadosTreinamento)
 
-def obterGaussiana(escala, media, desvioPadrao):
-    return np.exp(-np.power(escala - media, 2.) / (2 * np.power(desvioPadrao, 2.)))
 
-dfGaussianas = []
+gaussianaSetosaSl = norm(loc=medias['setosa-sl'], scale=desvioPadrao['setosa-sl'])
+gaussianaVersicolorSl = norm(loc=medias['versicolor-sl'], scale=desvioPadrao['versicolor-sl'])
+gaussianaVirginicaSl = norm(loc=medias['virginica-sl'], scale=desvioPadrao['virginica-sl'])
 
-gaussianaSetosaSl = norm(loc = medias['setosa-sl'], scale = desvioPadrao['setosa-sl'])
-gaussianaVersicolorSl = norm(loc = medias['versicolor-sl'], scale = desvioPadrao['versicolor-sl'])
-gaussianaVirginicaSl = norm(loc = medias['virginica-sl'], scale = desvioPadrao['virginica-sl'])
+gaussianaSetosaSw = norm(loc=medias['setosa-sw'], scale=desvioPadrao['setosa-sw'])
+gaussianaVersicolorSw = norm(loc=medias['versicolor-sw'], scale=desvioPadrao['versicolor-sw'])
+gaussianaVirginicaSw = norm(loc=medias['virginica-sw'], scale=desvioPadrao['virginica-sw'])
 
-gaussianaSetosaSw = norm(loc = medias['setosa-sw'], scale = desvioPadrao['setosa-sw'])
-gaussianaVersicolorSw = norm(loc = medias['versicolor-sw'], scale = desvioPadrao['versicolor-sw'])
-gaussianaVirginicaSw = norm(loc = medias['virginica-sw'], scale = desvioPadrao['virginica-sw'])
+gaussianaSetosaPl = norm(loc=medias['setosa-pl'], scale=desvioPadrao['setosa-pl'])
+gaussianaVersicolorPl = norm(loc=medias['versicolor-pl'], scale=desvioPadrao['versicolor-pl'])
+gaussianaVirginicaPl = norm(loc=medias['virginica-pl'], scale=desvioPadrao['virginica-pl'])
 
-gaussianaSetosaPl = norm(loc = medias['setosa-pl'], scale = desvioPadrao['setosa-pl'])
-gaussianaVersicolorPl = norm(loc = medias['versicolor-pl'], scale = desvioPadrao['versicolor-pl'])
-gaussianaVirginicaPl = norm(loc = medias['virginica-pl'], scale = desvioPadrao['virginica-pl'])
-
-gaussianaSetosaPw = norm(loc = medias['setosa-pw'], scale = desvioPadrao['setosa-pw'])
-gaussianaVersicolorPw = norm(loc = medias['versicolor-pw'], scale = desvioPadrao['versicolor-pw'])
-gaussianaVirginicaPw = norm(loc = medias['virginica-pw'], scale = desvioPadrao['virginica-pw'])
+gaussianaSetosaPw = norm(loc=medias['setosa-pw'], scale=desvioPadrao['setosa-pw'])
+gaussianaVersicolorPw = norm(loc=medias['versicolor-pw'], scale=desvioPadrao['versicolor-pw'])
+gaussianaVirginicaPw = norm(loc=medias['virginica-pw'], scale=desvioPadrao['virginica-pw'])
 
 slGraficos = plt
 slRange = np.arange(0, 10, .001)
