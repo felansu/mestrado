@@ -34,19 +34,16 @@ def estimateXX(df):
 
 def summaryHeader(somatorioXY, somatorioXX, b0, b1, eqm):
     print("""
-            * Somatório de X*X:     %(somatorioXX)s 
-            * Somatório de X*Y:     %(somatorioXY)s
-            * B0:                   %(b0)s
-            * B1:                   %(b1)s
-            * EQM:                  %(eqm)s
-            """ % {'somatorioXX': somatorioXX, 'somatorioXY': somatorioXY, 'b0': b0, 'b1': b1, 'eqm': eqm})
-
-def summaryDetail(df):
-    print(str(df) + "\n")
+            * Somatório de X*X:     {} 
+            * Somatório de X*Y:     {}
+            * B0:                   {}
+            * B1:                   {}
+            * EQM:                  {}
+            """.format(somatorioXX, somatorioXY, b0, b1, eqm))
 
 def summary(df, somatorioXY, somatorioXX, b0, b1, eqm):
     summaryHeader(somatorioXY, somatorioXX, b0, b1, eqm)
-    summaryDetail(df)
+    print(df)
 
 def plotarDados(df):
     df.plot.scatter(x='Idade', y='ProbAtaqueCardiaco')
@@ -82,8 +79,8 @@ def estimateModel():
     eqm10Ultimos = (df10Ultimos['erro'].sum() ** 2) / 10
 
     summary(df10Primeiros, somatorioXY, somatorioXX, b0, b1, eqm10Primeiros)
-    summaryDetail(df10Ultimos)
-    summaryDetail("EQM 10 últimos valores: "+str(eqm10Ultimos))
+    print("\n {} \n".format(df10Ultimos))
+    print("EQM 10 últimos valores: {} \n".format(eqm10Ultimos))
     plotarDados(df10Primeiros)
     plotarDados(df10Ultimos)
 
