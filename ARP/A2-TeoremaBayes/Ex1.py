@@ -9,7 +9,7 @@ from scipy.stats import norm
 import matplotlib.pyplot as plt
 
 df = {}  # dataFrame Original
-dft = {}  # dataFrameTreinamento
+dfTreinamento = {}  # dataFrameTreinamento
 
 # 1) Achar gaussianas (distribuição normal) Ex. p(SL | Ci).
 # 1.1 Achar media - 1.2 Achar variáncia - 1.3 Achar desvio padrão
@@ -26,13 +26,13 @@ def calcularMedias():
     for iClass in classes:
         for iCaracteristica in caracteristicas:
             classCaract = iClass + '-' + iCaracteristica['nome']
-            medias[classCaract] = dft[(dft['class'] == iClass)][iCaracteristica['nome']].sum() / 35
+            medias[classCaract] = dfTreinamento[(dfTreinamento['class'] == iClass)][iCaracteristica['nome']].sum() / 35
 
 def calcularVariancias():  # Variáncia: Somatorio de (Valor - media elevado ao quadrado) / número de elementos
     for iClass in classes:
         for iCaracteristica in caracteristicas:
             classCaract = iClass + '-' + iCaracteristica['nome']
-            variancias[classCaract] = ((dft[(dft['class'] == iClass)][iCaracteristica['nome']] -
+            variancias[classCaract] = ((dfTreinamento[(dfTreinamento['class'] == iClass)][iCaracteristica['nome']] -
                                         medias[
                                             classCaract]) ** 2).sum() / 34
 
@@ -52,7 +52,7 @@ def plotar():
         plt.show()
 
 def main():
-    global df, dft
+    global df, dfTreinamento
     df = pd.read_csv('iris.data')
     dft = df.iloc[:35, :].append(df.iloc[50:85, :]).append(df.iloc[100:135, :]).copy()
     calcularMedias(), calcularVariancias(), calcularDesvioPadrao(), plotar()

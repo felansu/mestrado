@@ -1,14 +1,8 @@
-# 1) Apresente o gráfico das funções de probabilidade: p(SL | Ci), p(SW | Ci), p(PL | Ci), p(SW |Ci)
-# 2) Apresente o gráfico do modelo usando o classificador Bayesiano:
-#       - p(Ci | SL, SW)
-#       - p(Ci | SL, PL)
-#       - p(Ci | SL, PW)
-#       - p(Ci | SW, PL)
-#       - p(Ci | SW, PW)
-#       - p(Ci | PL, PW)
-# Nota: as variáveis em questão são variáveis contínuas.
+# 1) Realize a classificação dos dados de teste usando o classificador do Problema 01.
+# # Calcule e apresente a taxa de acerto de cada amostra de teste para cada classe.
 
 import math
+from array import array
 
 import numpy as np
 import pandas as pd
@@ -22,7 +16,8 @@ import matplotlib.pyplot as plt
 
 # Declaração de variáveis
 df = {}  # dataFrame Original
-dfTreinamento = {}  # dataFrame de Treinamento
+dfTreinamento = {}  # dataFrame de treinamento
+dfTeste = {}  # dataFrame de teste
 medias = {}  # medias dos 35 primeiros de cada classe
 variancias = {}  # variancias dos 35 primeiros de cada classe
 desvioPadrao = {}  # desvio padrão dos 35 primeiros de cada classe
@@ -80,9 +75,10 @@ def plotar():
         plt.show()
 
 def init():
-    global df, dfTreinamento
+    global df, dfTreinamento, dfTeste
     df = pd.read_csv('iris.data')
-    dft = df.iloc[:35].append(df.iloc[50:85]).append(df.iloc[100:135]).copy()
+    dfTreinamento = df.iloc[:35].append(df.iloc[50:85]).append(df.iloc[100:135]).copy()
+    dfTeste = df.iloc[35:50].append(df.iloc[85:100]).append(df.iloc[135:150]).copy()
 
 def ex1_1p():
     init()
@@ -120,4 +116,40 @@ def ex1_2p():
             z_axis_visibility=True,
             ranges=[-2, 10, -2, 10, 0, 1])
     mlab.show()
-ex1_2p()
+
+def ex2():
+    init()
+    calcularMedias(), calcularVariancias(), calcularDesvioPadrao()
+    for iCaracteristica in caracteristicas:
+        for iClass in classes:
+            classCaract = iClass + '-' + iCaracteristica['nome']
+            gaussiana = calcularGaussiana(classCaract)
+            coluna = 'P({}|{})'.format(iCaracteristica['nome'], iClass)
+            dfTeste[coluna] = gaussiana.pdf(dfTeste[iCaracteristica['nome']])
+
+    dfTeste['Somas SL'] = (dfTeste['P(sl|versicolor)'] + dfTeste['P(sl|virginica)'] + dfTeste['P(sl|setosa)']) * 1/3
+    dfTeste['Somas SW'] = (dfTeste['P(sw|versicolor)'] + dfTeste['P(sw|virginica)'] + dfTeste['P(sw|setosa)']) * 1/3
+    dfTeste['Somas PL'] = (dfTeste['P(pl|versicolor)'] + dfTeste['P(pl|virginica)'] + dfTeste['P(pl|setosa)']) * 1/3
+    dfTeste['Somas PW'] = (dfTeste['P(pw|versicolor)'] + dfTeste['P(pw|virginica)'] + dfTeste['P(pw|setosa)']) * 1/3
+
+    dfTeste['Somas Gaussianas'] = (dfTeste['Somas SL'] * dfTeste['Somas SW'] * dfTeste['Somas PL'] * dfTeste['Somas PW'])
+
+    dfTeste['P(Setosa| SL, SW, PL, PW)'] = ((dfTeste['P(sl|setosa)'] * dfTeste['P(sw|setosa)'] * dfTeste['P(pl|setosa)'] * dfTeste['P(pw|setosa)']) * 1/3) / dfTeste['Somas Gaussianas']
+    dfTeste['P(Versicolor| SL, SW, PL, PW)'] = ((dfTeste['P(sl|versicolor)'] * dfTeste['P(sw|versicolor)'] * dfTeste['P(pl|versicolor)'] * dfTeste['P(pw|versicolor)']) * 1/3) /dfTeste['Somas Gaussianas']
+    dfTeste['P(Virginica| SL, SW, PL, PW)'] = ((dfTeste['P(sl|virginica)'] * dfTeste['P(sw|virginica)'] * dfTeste['P(pl|virginica)'] * dfTeste['P(pw|virginica)']) * 1/3) /dfTeste['Somas Gaussianas']
+
+    for index, row in dfTeste.iterrows():
+        argmax = np.argmax([row['P(Setosa| SL, SW, PL, PW)'], row['P(Versicolor| SL, SW, PL, PW)'], row['P(Virginica| SL, SW, PL, PW)']])
+        if(argmax == 0):
+            argmax = 'setosa'
+        elif(argmax == 1):
+            argmax = 'versicolor'
+        elif(argmax == 2):
+            argmax = 'virginica'
+
+        dfTeste.set_value(index, 'argMax', argmax)
+
+    dfTeste['Accuracy'] = dfTeste['argMax'] == dfTeste['class']
+    print(dfTeste)
+
+ex2()
